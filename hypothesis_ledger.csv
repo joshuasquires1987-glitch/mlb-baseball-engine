@@ -1,0 +1,7 @@
+hypothesis_id,name,status,production_rule
+H1,Tail calibration,research,False
+H2,Bet timing,research,False
+H3,Pitcher change points,research,False
+H4,Rain-delay effects,research,False
+H5,Lesser-known effective starters,research,False
+H6,Starter depth / bullpen exposure,validated_challenger,False
