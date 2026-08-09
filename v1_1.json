@@ -1,0 +1,20 @@
+{
+  "model_version": "v1.1",
+  "status": "production_frozen",
+  "weights": {
+    "starting_pitcher": 0.25,
+    "underlying_team_strength": 0.2,
+    "bullpen": 0.15,
+    "confirmed_lineup_offense": 0.15,
+    "platoon_matchup_fit": 0.07,
+    "defense": 0.05,
+    "home_field": 0.04,
+    "park": 0.03,
+    "weather": 0.03,
+    "travel_rest_circadian": 0.03
+  },
+  "min_edge_pp": 3.0,
+  "staking": "half_kelly",
+  "reference_bankroll_cad": 1000,
+  "prices_allowed_in_probability_model": false
+}

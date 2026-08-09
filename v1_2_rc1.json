@@ -1,0 +1,25 @@
+{
+  "model_version": "v1.2-RC1",
+  "status": "shadow_frozen",
+  "weights": {
+    "starting_pitcher_talent_state": 0.23,
+    "underlying_team_strength": 0.2,
+    "confirmed_lineup_offense": 0.17,
+    "bullpen_talent_state": 0.12,
+    "expected_starter_depth": 0.06,
+    "bullpen_exposure_quality": 0.07,
+    "platoon_matchup_fit": 0.03,
+    "defense": 0.05,
+    "home_field": 0.03,
+    "park": 0.03,
+    "weather": 0.005,
+    "travel_rest_circadian": 0.005
+  },
+  "status_rules": {
+    "controls_bets": false,
+    "controls_stakes": false,
+    "shadow_only": true
+  },
+  "prices_allowed_in_probability_model": false,
+  "shadow_gate_games": 500
+}
