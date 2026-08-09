@@ -1,0 +1,80 @@
+{
+  "teams": {
+    "away": {
+      "team": {
+        "id": 121,
+        "abbreviation": "NYM"
+      },
+      "probablePitcher": {
+        "id": 640455,
+        "fullName": "Sean Manaea"
+      },
+      "players": {
+        "ID640455": {
+          "person": {
+            "id": 640455,
+            "fullName": "Sean Manaea"
+          },
+          "stats": {
+            "pitching": {
+              "inningsPitched": "6.0",
+              "runs": 2,
+              "battersFaced": 25
+            }
+          }
+        },
+        "ID123": {
+          "person": {
+            "id": 123,
+            "fullName": "Reliever A"
+          },
+          "stats": {
+            "pitching": {
+              "inningsPitched": "2.0",
+              "runs": 0,
+              "battersFaced": 7
+            }
+          }
+        }
+      }
+    },
+    "home": {
+      "team": {
+        "id": 134,
+        "abbreviation": "PIT"
+      },
+      "probablePitcher": {
+        "id": 683003,
+        "fullName": "Jared Jones"
+      },
+      "players": {
+        "ID683003": {
+          "person": {
+            "id": 683003,
+            "fullName": "Jared Jones"
+          },
+          "stats": {
+            "pitching": {
+              "inningsPitched": "5.2",
+              "runs": 1,
+              "battersFaced": 22
+            }
+          }
+        },
+        "ID456": {
+          "person": {
+            "id": 456,
+            "fullName": "Reliever B"
+          },
+          "stats": {
+            "pitching": {
+              "inningsPitched": "1.1",
+              "runs": 1,
+              "battersFaced": 6
+            }
+          }
+        }
+      }
+    }
+  }
+}
