@@ -1,0 +1,76 @@
+{
+  "Sean Manaea": [
+    {
+      "date": "2026-08-04",
+      "ip": "6.0",
+      "runs_allowed": 2,
+      "batters_faced": null,
+      "source": "Bucs Dugout pregame recap"
+    },
+    {
+      "date": "2026-07-18",
+      "ip": "4.2",
+      "runs_allowed": 4,
+      "batters_faced": null,
+      "source": "CBS Sports game log"
+    },
+    {
+      "date": "2026-07-09",
+      "ip": "7.0",
+      "runs_allowed": 3,
+      "batters_faced": null,
+      "source": "CBS Sports game log"
+    },
+    {
+      "date": "2026-07-04",
+      "ip": "5.0",
+      "runs_allowed": 6,
+      "batters_faced": null,
+      "source": "CBS Sports game log"
+    },
+    {
+      "date": "2026-06-29",
+      "ip": "5.2",
+      "runs_allowed": 2,
+      "batters_faced": null,
+      "source": "CBS Sports game log"
+    }
+  ],
+  "Jared Jones": [
+    {
+      "date": "2026-08-04",
+      "ip": "4.0",
+      "runs_allowed": 3,
+      "batters_faced": null,
+      "source": "Bucs Dugout pregame recap"
+    },
+    {
+      "date": "2026-07-24",
+      "ip": "6.0",
+      "runs_allowed": 1,
+      "batters_faced": null,
+      "source": "StatPro game log"
+    },
+    {
+      "date": "2026-07-18",
+      "ip": "5.0",
+      "runs_allowed": 1,
+      "batters_faced": null,
+      "source": "CBS/StatPro game log"
+    },
+    {
+      "date": "2026-07-08",
+      "ip": "6.0",
+      "runs_allowed": 0,
+      "batters_faced": null,
+      "source": "CBS/StatPro game log"
+    },
+    {
+      "date": "2026-07-02",
+      "ip": "4.0",
+      "runs_allowed": 1,
+      "batters_faced": null,
+      "source": "CBS/StatPro game log"
+    }
+  ]
+}
