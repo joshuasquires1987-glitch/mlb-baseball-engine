@@ -1,0 +1,42 @@
+[
+  {
+    "game_key": "CIN@WSH",
+    "away_team": "CIN",
+    "home_team": "WSH",
+    "away_pitcher_name": "Brady Singer",
+    "home_pitcher_name": "Brad Lord",
+    "source_name": "Reddit team gameday thread / MLB-linked feed",
+    "fetched_at_utc": "2026-08-09T09:00:00-04:00",
+    "notes": "Both probable pitchers named."
+  },
+  {
+    "game_key": "NYM@PIT",
+    "away_team": "NYM",
+    "home_team": "PIT",
+    "away_pitcher_name": "Sean Manaea",
+    "home_pitcher_name": "Jared Jones",
+    "source_name": "Reddit team pregame thread / MLB-linked feed",
+    "fetched_at_utc": "2026-08-09T09:00:00-04:00",
+    "notes": "Both probable pitchers named."
+  },
+  {
+    "game_key": "TOR@PHI",
+    "away_team": "TOR",
+    "home_team": "PHI",
+    "away_pitcher_name": "Shane Bieber",
+    "home_pitcher_name": "Jesús Luzardo",
+    "source_name": "Reddit Phillies gameday / MLB-linked feed",
+    "fetched_at_utc": "2026-08-09T07:35:00-04:00",
+    "notes": "Both probable pitchers named; lineups not yet confirmed in source snapshot."
+  },
+  {
+    "game_key": "ATH@BOS",
+    "away_team": "ATH",
+    "home_team": "BOS",
+    "away_pitcher_name": "J.T. Ginn",
+    "home_pitcher_name": null,
+    "source_name": "Athletics Nation game recap",
+    "fetched_at_utc": "2026-08-09T08:00:00-04:00",
+    "notes": "Oakland lists J.T. Ginn; Boston may use a bullpen game. Must remain unresolved."
+  }
+]
