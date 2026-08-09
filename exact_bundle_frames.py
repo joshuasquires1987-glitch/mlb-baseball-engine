@@ -7,24 +7,26 @@ def pitching_frame(bundle):
         missing=required-set(r)
         if missing: raise ValueError(f"pitching row {i} missing {sorted(missing)}")
         if r["source_exact"] is not True: raise ValueError("non-exact pitching row")
-    return pd.DataFrame(rows)
+    df=pd.DataFrame(rows)
+    if not df.empty:
+        df["id"]=df["id"].astype(str)
+        df["team"]=df["team"].astype(str)
+    return df
 
 def games_frame(bundle):
     rows=bundle.get("team_games",[])
-    # Convert team-perspective rows into one canonical game row per date/opponent pair when possible.
-    if not rows: return pd.DataFrame()
     required={"date","team","opponent","runs_for","runs_against"}
     for i,r in enumerate(rows):
         missing=required-set(r)
         if missing: raise ValueError(f"team row {i} missing {sorted(missing)}")
-    seen=set(); out=[]
-    for r in rows:
-        key=(r["date"], tuple(sorted((r["team"],r["opponent"]))))
-        if key in seen: continue
-        seen.add(key)
-        if r["runs_for"] > r["runs_against"]:
-            # Venue is not inferred. The assembler's team-strength path can consume normalized
-            # perspective rows via adapter below; canonical home/away conversion is forbidden.
-            pass
-        out.append(dict(r))
-    return pd.DataFrame(out)
+
+    # Existing assembler expects Retrosheet-style canonical game rows:
+    # date, hometeam, visteam, hruns, vruns.
+    # The exact bundle currently stores team-perspective rows and does NOT
+    # preserve venue. We therefore fail closed instead of guessing home/away.
+    if rows:
+        raise RuntimeError(
+            "Exact team-game bundle lacks explicit home/away venue fields; "
+            "cannot safely convert to assembler game rows."
+        )
+    return pd.DataFrame(columns=["date","hometeam","visteam","hruns","vruns"])
