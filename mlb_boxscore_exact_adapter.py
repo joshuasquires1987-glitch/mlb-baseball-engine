@@ -1,5 +1,3 @@
-from datetime import datetime
-
 def innings_to_outs(ip):
     s=str(ip)
     if "." in s:
@@ -11,8 +9,32 @@ def innings_to_outs(ip):
         raise ValueError(f"Invalid baseball innings notation: {ip}")
     return int(whole)*3 + frac
 
+
 def _player_id_from_key(key):
     return str(key).replace("ID","",1)
+
+
+def _recorded_starter_id(team_payload):
+    # Preferred: exact per-game pitching stat marks Games Started.
+    for key,p in team_payload.get("players",{}).items():
+        stats=p.get("stats",{}).get("pitching") or {}
+        if int(stats.get("gamesStarted",0) or 0) == 1:
+            return str(p.get("person",{}).get("id") or _player_id_from_key(key))
+
+    # MLB boxscore `pitchers` is the ordered list of pitchers used in the game.
+    # For a completed game, the first pitcher is the recorded starter.
+    pitchers=team_payload.get("pitchers") or []
+    if pitchers:
+        return str(pitchers[0])
+
+    # `probablePitcher` is useful when present, but completed historical
+    # boxscores do not reliably retain it.
+    probable=team_payload.get("probablePitcher") or {}
+    if probable.get("id") is not None:
+        return str(probable["id"])
+
+    return None
+
 
 def exact_pitching_rows(boxscore_payload, game_date, team_code):
     rows=[]
@@ -21,30 +43,35 @@ def exact_pitching_rows(boxscore_payload, game_date, team_code):
         t=teams.get(side,{})
         if t.get("team",{}).get("abbreviation") != team_code:
             continue
+
         players=t.get("players",{})
-        probable=t.get("probablePitcher",{})
-        starter_id=str(probable.get("id")) if probable.get("id") is not None else None
+        starter_id=_recorded_starter_id(t)
+
         for key,p in players.items():
             stats=p.get("stats",{}).get("pitching")
             if not stats:
                 continue
+
             pid=str(p.get("person",{}).get("id") or _player_id_from_key(key))
             bf=stats.get("battersFaced")
             ip=stats.get("inningsPitched")
             runs=stats.get("runs")
+
             if bf is None or ip is None or runs is None:
                 continue
+
             rows.append({
-                "date":game_date,
+                "date":str(game_date),
                 "id":pid,
                 "team":team_code,
-                "p_gs":1 if starter_id and pid==starter_id else 0,
+                "p_gs":1 if starter_id is not None and pid==starter_id else 0,
                 "p_bfp":float(bf),
                 "p_r":float(runs),
                 "p_ipouts":float(innings_to_outs(ip)),
                 "source_exact":True,
             })
     return rows
+
 
 def exact_starter_row(boxscore_payload, game_date, team_code, pitcher_id):
     rows=exact_pitching_rows(boxscore_payload,game_date,team_code)
@@ -55,6 +82,7 @@ def exact_starter_row(boxscore_payload, game_date, team_code, pitcher_id):
     if row["p_gs"] != 1:
         raise ValueError(f"Pitcher {pitcher_id} was not the recorded starter")
     return row
+
 
 def exact_relief_rows(boxscore_payload,game_date,team_code):
     return [r for r in exact_pitching_rows(boxscore_payload,game_date,team_code) if r["p_gs"]==0]
