@@ -1,0 +1,1 @@
+game_id,model_version,model_prob,outcome,brier,log_loss,selected_side,home_away,confidence,uncertainty_band,starter_context,decimal_odds,predicted_edge_pp,edge_bucket,price_band,favorite_underdog,clv_pp,stake_cad,pnl_cad
