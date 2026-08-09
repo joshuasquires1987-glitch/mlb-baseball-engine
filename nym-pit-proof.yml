@@ -1,0 +1,30 @@
+name: NYM PIT Probability Proof
+on:
+  push:
+    paths:
+      - "run_nym_pit_proof.py"
+      - "run_nym_pit_backfill.py"
+      - "exact_backfill_executor.py"
+      - "team_game_exact_adapter_v2.py"
+      - ".github/workflows/nym-pit-proof.yml"
+  workflow_dispatch:
+jobs:
+  proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pandas pytest
+      - run: pytest -q
+      - run: python run_nym_pit_proof.py
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nym-pit-proof
+          path: |
+            nym_pit_exact_history_bundle.json
+            nym_pit_probability_proof.json
+          if-no-files-found: warn
