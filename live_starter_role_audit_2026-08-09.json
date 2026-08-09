@@ -1,0 +1,39 @@
+{
+  "CIN@WSH": {
+    "away": {
+      "name": "Brady Singer",
+      "mlb_id": "663903",
+      "era": 4.67,
+      "ip": 113.2,
+      "role": "starter",
+      "role_confidence": "green"
+    },
+    "home": {
+      "name": "Brad Lord",
+      "mlb_id": "695418",
+      "era": 3.81,
+      "ip": 59.0,
+      "role": "opener_or_bullpen_game",
+      "role_confidence": "red",
+      "notes": "Return from IL/rehab; pregame discussion indicates limited opener/bullpen-game workload."
+    }
+  },
+  "NYM@PIT": {
+    "away": {
+      "name": "Sean Manaea",
+      "mlb_id": "640455",
+      "era": 4.33,
+      "ip": 97.2,
+      "role": "starter",
+      "role_confidence": "green"
+    },
+    "home": {
+      "name": "Jared Jones",
+      "mlb_id": "683003",
+      "era": 4.02,
+      "ip": 56.0,
+      "role": "starter",
+      "role_confidence": "green"
+    }
+  }
+}
