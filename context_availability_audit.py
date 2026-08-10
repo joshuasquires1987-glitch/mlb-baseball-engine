@@ -9,22 +9,27 @@ REQUIRED = (
     "pregame_lineup_snapshot",
 )
 
-def audit_game(game, weather, park_record, venue_record, prior_state, lineup_snapshot):
+def audit_game(game,weather,park_record,venue_record,prior_state,lineup_snapshot):
     checks={
-        "final_outcome": game.get("home_runs") is not None and game.get("away_runs") is not None
-                         and game.get("home_runs") != game.get("away_runs"),
-        "game_time": game.get("game_time_utc") is not None,
-        "venue": game.get("venue_id") is not None,
-        "pregame_weather": weather is not None,
-        "park_factor": park_record is not None and park_record.get("park_factor") is not None
-                       and park_record.get("frozen_through_date") is not None,
-        "venue_timezone": venue_record is not None and venue_record.get("utc_offset_hours") is not None,
-        "prior_schedule_state": prior_state is not None
-                                and prior_state.get("home") is not None
-                                and prior_state.get("away") is not None,
-        "pregame_lineup_snapshot": lineup_snapshot is not None
-                                   and lineup_snapshot.get("captured_before_first_pitch") is True
-                                   and lineup_snapshot.get("platoon_lineup_delta") is not None,
+        "final_outcome":game.get("home_runs") is not None and game.get("away_runs") is not None
+                        and game.get("home_runs") != game.get("away_runs"),
+        "game_time":game.get("game_time_utc") is not None,
+        "venue":game.get("venue_id") is not None,
+        "pregame_weather":weather is not None,
+        "park_factor":park_record is not None
+                      and park_record.get("park_factor") is not None
+                      and (
+                          park_record.get("frozen_through_utc") is not None
+                          or park_record.get("frozen_through_date") is not None
+                      ),
+        "venue_timezone":venue_record is not None
+                         and venue_record.get("utc_offset_hours") is not None,
+        "prior_schedule_state":prior_state is not None
+                               and prior_state.get("home") is not None
+                               and prior_state.get("away") is not None,
+        "pregame_lineup_snapshot":lineup_snapshot is not None
+                                  and lineup_snapshot.get("captured_before_first_pitch") is True
+                                  and lineup_snapshot.get("platoon_lineup_delta") is not None,
     }
     missing=[k for k,v in checks.items() if not v]
     return {"usable":not missing,"checks":checks,"missing":missing}
