@@ -1,0 +1,2 @@
+# BT-0084 RC2 Context Diagnostics
+Research-only diagnosis after BT-0083 failed the shadow gate. Runs four expanding chronological folds across: all features; park-only; weather-only; travel/rest-only; platoon-only; and leave-one-group-out variants. No production mutation, bets, or stakes. The purpose is to identify stable incremental signal versus unstable/noisy context features before any new challenger is proposed.
