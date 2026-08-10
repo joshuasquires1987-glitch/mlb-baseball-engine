@@ -1,0 +1,55 @@
+name: Full Season Platoon Snapshot Build
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip pandas pytest
+
+      - name: Run tests
+        run: pytest -q
+
+      - name: Verify raw lineup file exists
+        run: test -s pregame_lineup_snapshots_raw.jsonl
+
+      - name: Build final certified platoon snapshots
+        run: python run_full_season_platoon_snapshot_build.py
+
+      - name: Show build summary
+        if: always()
+        run: |
+          if [ -f pregame_lineup_snapshots_build_report.json ]; then
+            python - <<'PY'
+          import json
+          x=json.load(open("pregame_lineup_snapshots_build_report.json"))
+          x.pop("failures",None)
+          print(json.dumps(x,indent=2))
+          PY
+          fi
+
+      - name: Upload final snapshot artifacts
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: full-season-platoon-snapshots
+          if-no-files-found: warn
+          path: |
+            pregame_lineup_snapshots.jsonl
+            pregame_lineup_snapshots_build_report.json
