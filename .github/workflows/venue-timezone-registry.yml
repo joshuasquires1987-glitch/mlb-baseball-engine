@@ -1,0 +1,45 @@
+name: Venue Timezone Registry Build
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip pandas pytest
+
+      - name: Run tests
+        run: pytest -q
+
+      - name: Build 2025 venue timezone registry
+        run: python run_venue_timezone_registry_build.py
+
+      - name: Show registry
+        if: always()
+        run: |
+          if [ -f venue_timezone_registry.json ]; then
+            cat venue_timezone_registry.json
+          fi
+
+      - name: Upload registry artifact
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: venue-timezone-registry
+          if-no-files-found: error
+          path: venue_timezone_registry.json
