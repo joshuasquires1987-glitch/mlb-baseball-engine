@@ -6,11 +6,13 @@ def main(start_date="2025-03-27", end_date="2025-09-28"):
     games = completed_games(start_date, end_date)
     registry = build_registry(games)
     write_registry(registry)
+
     print(json.dumps({
         "venues_found": len(registry["rows"]),
         "errors": registry["errors"],
         "complete": registry["complete"],
     }, indent=2))
+
     if not registry["complete"]:
         raise SystemExit(2)
     return registry
