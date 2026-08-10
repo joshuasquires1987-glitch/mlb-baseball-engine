@@ -1,0 +1,49 @@
+name: Historical Pregame Lineup Probe
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip pandas pytest
+
+      - name: Run tests
+        run: pytest -q
+
+      - name: Probe historical pregame MLB lineups
+        run: python run_historical_pregame_lineup_probe.py
+
+      - name: Show probe summary
+        if: always()
+        run: |
+          if [ -f historical_pregame_lineup_probe.json ]; then
+            python - <<'PY'
+          import json
+          x=json.load(open("historical_pregame_lineup_probe.json"))
+          print(json.dumps(x["summary"],indent=2))
+          PY
+          fi
+
+      - name: Upload probe artifact
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: historical-pregame-lineup-probe
+          if-no-files-found: warn
+          path: historical_pregame_lineup_probe.json
