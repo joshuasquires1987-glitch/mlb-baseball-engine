@@ -1,0 +1,20 @@
+name: RC2 Context Diagnostics
+on: {workflow_dispatch: {}}
+permissions: {contents: read}
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with: {python-version: "3.12"}
+      - run: python -m pip install --upgrade pip pandas numpy pytest
+      - run: pytest -q
+      - run: python run_rc2_context_diagnostics.py
+      - if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: rc2-context-diagnostics
+          if-no-files-found: warn
+          path: rc2_context_diagnostics_report.json
