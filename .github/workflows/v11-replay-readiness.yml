@@ -1,0 +1,19 @@
+name: v1.1 Replay Readiness Audit
+on: {workflow_dispatch: {}}
+permissions: {contents: read}
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with: {python-version: "3.12"}
+      - run: python -m pip install --upgrade pip pytest
+      - run: pytest -q
+      - run: python v11_replay_readiness.py
+      - if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: v11-replay-readiness
+          if-no-files-found: warn
+          path: v11_replay_readiness_report.json
