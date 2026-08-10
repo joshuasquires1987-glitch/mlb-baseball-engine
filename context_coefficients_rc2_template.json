@@ -1,0 +1,18 @@
+{
+  "version": "v1.2-RC2-context-research",
+  "status": "uncalibrated",
+  "controls_bets": false,
+  "controls_stakes": false,
+  "coefficients": {
+    "park_factor_delta": null,
+    "temperature_delta_f": null,
+    "wind_out_mph": null,
+    "wind_in_mph": null,
+    "travel_timezone_delta_hours": null,
+    "rest_days_delta": null,
+    "platoon_lineup_delta": null
+  },
+  "training_games": 0,
+  "holdout_games": 0,
+  "holdout_logloss_delta": null
+}

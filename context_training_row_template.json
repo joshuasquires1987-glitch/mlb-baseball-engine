@@ -1,0 +1,12 @@
+{
+  "game_id": "example",
+  "game_date": "YYYY-MM-DD",
+  "home_win": 0,
+  "park_factor_delta": 0.0,
+  "temperature_delta_f": 0.0,
+  "wind_out_mph": 0.0,
+  "wind_in_mph": 0.0,
+  "travel_timezone_delta_hours": 0.0,
+  "rest_days_delta": 0.0,
+  "platoon_lineup_delta": 0.0
+}
