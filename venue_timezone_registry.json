@@ -1,3 +1,295 @@
 {
-  "rows": []
+  "complete": true,
+  "errors": [],
+  "generated_at_utc": "2026-08-10T04:27:21.055382+00:00",
+  "rows": [
+    {
+      "latitude": 33.80019044,
+      "longitude": -117.8823996,
+      "source_coordinates": "MLB-StatsAPI-venue-location",
+      "source_timezone": "timezonefinder-coordinate-lookup",
+      "timezone_id": "America/Los_Angeles",
+      "venue_id": "1",
+      "venue_name": "Angel Stadium"
+    },
+    {
+      "latitude": 39.283787,
+      "longitude": -76.621689,
+      "source_coordinates": "MLB-StatsAPI-venue-location",
+      "source_timezone": "timezonefinder-coordinate-lookup",
+      "timezone_id": "America/New_York",
+      "venue_id": "2",
+      "venue_name": "Oriole Park at Camden Yards"
+    },
+    {
+      "latitude": 42.346456,
+      "longitude": -71.097441,
+      "source_coordinates": "MLB-StatsAPI-venue-location",
+      "source_timezone": "timezonefinder-coordinate-lookup",
+      "timezone_id": "America/New_York",
+      "venue_id": "3",
+      "venue_name": "Fenway Park"
+    },
+    {
+      "latitude": 41.83,
+      "longitude": -87.634167,
+      "source_coordinates": "MLB-StatsAPI-venue-location",
+      "source_timezone": "timezonefinder-coordinate-lookup",
+      "timezone_id": "America/Chicago",
+      "venue_id": "4",
+      "venue_name": "Rate Field"
+    },
+    {
+      "latitude": 41.495861,
+      "longitude": -81.685255,
+      "source_coordinates": "MLB-StatsAPI-venue-location",
+      "source_timezone": "timezonefinder-coordinate-lookup",
+      "timezone_id": "America/New_York",
+      "venue_id": "5",
+      "venue_name": "Progressive Field"
+    },
+    {
+      "latitude": 39.051567,
+      "longitude": -94.480483,
+      "source_coordinates": "MLB-StatsAPI-venue-location",
+      "source_timezone": "timezonefinder-coordinate-lookup",
+      "timezone_id": "America/Chicago",
+      "venue_id": "7",
+      "venue_name": "Kauffman Stadium"
+    },
+    {
+      "latitude": 43.64155,
+      "longitude": -79.38915,
+      "source_coordinates": "MLB-StatsAPI-venue-location",
+      "source_timezone": "timezonefinder-coordinate-lookup",
+      "timezone_id": "America/Toronto",
+      "venue_id": "14",
+      "venue_name": "Rogers Centre"
+    },
+    {
+      "latitude": 33.445302,
+      "longitude": -112.066687,
+      "source_coordinates": "MLB-StatsAPI-venue-location",
+      "source_timezone": "timezonefinder-coordinate-lookup",
+      "timezone_id": "America/Phoenix",
+      "venue_id": "15",
+      "venue_name": "Chase Field"
+    },
+    {
+      "latitude": 41.948171,
+      "longitude": -87.655503,
+      "source_coordinates": "MLB-StatsAPI-venue-location",
+      "source_timezone": "timezonefinder-coordinate-lookup",
+      "timezone_id": "America/Chicago",
+      "venue_id": "17",
+      "venue_name": "Wrigley Field"
+    },
+    {
+      "latitude": 39.756042,
+      "longitude": -104.994136,
+      "source_coordinates": "MLB-StatsAPI-venue-location",
+      "source_timezone": "timezonefinder-coordinate-lookup",
+      "timezone_id": "America/Denver",
+      "venue_id": "19",
+      "venue_name": "Coors Field"
+    },
+    {
+      "latitude": 34.07368,
+      "longitude": -118.24053,
+      "source_coordinates": "MLB-StatsAPI-venue-location",
+      "source_timezone": "timezonefinder-coordinate-lookup",
+      "timezone_id": "America/Los_Angeles",
+      "venue_id": "22",
+      "venue_name": "UNIQLO Field at Dodger Stadium"
+    },
+    {
+      "latitude": 40.446904,
+      "longitude": -80.005753,
+      "source_coordinates": "MLB-StatsAPI-venue-location",
+      "source_timezone": "timezonefinder-coordinate-lookup",
+      "timezone_id": "America/New_York",
+      "venue_id": "31",
+      "venue_name": "PNC Park"
+    },
+    {
+      "latitude": 43.02838,
+      "longitude": -87.97099,
+      "source_coordinates": "MLB-StatsAPI-venue-location",
+      "source_timezone": "timezonefinder-coordinate-lookup",
+      "timezone_id": "America/Chicago",
+      "venue_id": "32",
+      "venue_name": "American Family Field"
+    },
+    {
+      "latitude": 47.591333,
+      "longitude": -122.33251,
+      "source_coordinates": "MLB-StatsAPI-venue-location",
+      "source_timezone": "timezonefinder-coordinate-lookup",
+      "timezone_id": "America/Los_Angeles",
+      "venue_id": "680",
+      "venue_name": "T-Mobile Park"
+    },
+    {
+      "latitude": 29.756967,
+      "longitude": -95.355509,
+      "source_coordinates": "MLB-StatsAPI-venue-location",
+      "source_timezone": "timezonefinder-coordinate-lookup",
+      "timezone_id": "America/Chicago",
+      "venue_id": "2392",
+      "venue_name": "Daikin Park"
+    },
+    {
+      "latitude": 42.3391151,
+      "longitude": -83.048695,
+      "source_coordinates": "MLB-StatsAPI-venue-location",
+      "source_timezone": "timezonefinder-coordinate-lookup",
+      "timezone_id": "America/Detroit",
+      "venue_id": "2394",
+      "venue_name": "Comerica Park"
+    },
+    {
+      "latitude": 37.778383,
+      "longitude": -122.389448,
+      "source_coordinates": "MLB-StatsAPI-venue-location",
+      "source_timezone": "timezonefinder-coordinate-lookup",
+      "timezone_id": "America/Los_Angeles",
+      "venue_id": "2395",
+      "venue_name": "Oracle Park"
+    },
+    {
+      "latitude": 27.97997,
+      "longitude": -82.50702,
+      "source_coordinates": "MLB-StatsAPI-venue-location",
+      "source_timezone": "timezonefinder-coordinate-lookup",
+      "timezone_id": "America/New_York",
+      "venue_id": "2523",
+      "venue_name": "George M. Steinbrenner Field"
+    },
+    {
+      "latitude": 38.57994,
+      "longitude": -121.51246,
+      "source_coordinates": "MLB-StatsAPI-venue-location",
+      "source_timezone": "timezonefinder-coordinate-lookup",
+      "timezone_id": "America/Los_Angeles",
+      "venue_id": "2529",
+      "venue_name": "Sutter Health Park"
+    },
+    {
+      "latitude": 39.097389,
+      "longitude": -84.506611,
+      "source_coordinates": "MLB-StatsAPI-venue-location",
+      "source_timezone": "timezonefinder-coordinate-lookup",
+      "timezone_id": "America/New_York",
+      "venue_id": "2602",
+      "venue_name": "Great American Ball Park"
+    },
+    {
+      "latitude": 32.707861,
+      "longitude": -117.157278,
+      "source_coordinates": "MLB-StatsAPI-venue-location",
+      "source_timezone": "timezonefinder-coordinate-lookup",
+      "timezone_id": "America/Los_Angeles",
+      "venue_id": "2680",
+      "venue_name": "Petco Park"
+    },
+    {
+      "latitude": 39.90539086,
+      "longitude": -75.16716957,
+      "source_coordinates": "MLB-StatsAPI-venue-location",
+      "source_timezone": "timezonefinder-coordinate-lookup",
+      "timezone_id": "America/New_York",
+      "venue_id": "2681",
+      "venue_name": "Citizens Bank Park"
+    },
+    {
+      "latitude": 41.2419845,
+      "longitude": -77.0475104,
+      "source_coordinates": "MLB-StatsAPI-venue-location",
+      "source_timezone": "timezonefinder-coordinate-lookup",
+      "timezone_id": "America/New_York",
+      "venue_id": "2735",
+      "venue_name": "Journey Bank Ballpark"
+    },
+    {
+      "latitude": 38.62256667,
+      "longitude": -90.19286667,
+      "source_coordinates": "MLB-StatsAPI-venue-location",
+      "source_timezone": "timezonefinder-coordinate-lookup",
+      "timezone_id": "America/Chicago",
+      "venue_id": "2889",
+      "venue_name": "Busch Stadium"
+    },
+    {
+      "latitude": 40.75753012,
+      "longitude": -73.84559155,
+      "source_coordinates": "MLB-StatsAPI-venue-location",
+      "source_timezone": "timezonefinder-coordinate-lookup",
+      "timezone_id": "America/New_York",
+      "venue_id": "3289",
+      "venue_name": "Citi Field"
+    },
+    {
+      "latitude": 38.872861,
+      "longitude": -77.007501,
+      "source_coordinates": "MLB-StatsAPI-venue-location",
+      "source_timezone": "timezonefinder-coordinate-lookup",
+      "timezone_id": "America/New_York",
+      "venue_id": "3309",
+      "venue_name": "Nationals Park"
+    },
+    {
+      "latitude": 44.981829,
+      "longitude": -93.277891,
+      "source_coordinates": "MLB-StatsAPI-venue-location",
+      "source_timezone": "timezonefinder-coordinate-lookup",
+      "timezone_id": "America/Chicago",
+      "venue_id": "3312",
+      "venue_name": "Target Field"
+    },
+    {
+      "latitude": 40.82919482,
+      "longitude": -73.9264977,
+      "source_coordinates": "MLB-StatsAPI-venue-location",
+      "source_timezone": "timezonefinder-coordinate-lookup",
+      "timezone_id": "America/New_York",
+      "venue_id": "3313",
+      "venue_name": "Yankee Stadium"
+    },
+    {
+      "latitude": 25.77796236,
+      "longitude": -80.21951795,
+      "source_coordinates": "MLB-StatsAPI-venue-location",
+      "source_timezone": "timezonefinder-coordinate-lookup",
+      "timezone_id": "America/New_York",
+      "venue_id": "4169",
+      "venue_name": "loanDepot park"
+    },
+    {
+      "latitude": 33.890672,
+      "longitude": -84.467641,
+      "source_coordinates": "MLB-StatsAPI-venue-location",
+      "source_timezone": "timezonefinder-coordinate-lookup",
+      "timezone_id": "America/New_York",
+      "venue_id": "4705",
+      "venue_name": "Truist Park"
+    },
+    {
+      "latitude": 32.747299,
+      "longitude": -97.081818,
+      "source_coordinates": "MLB-StatsAPI-venue-location",
+      "source_timezone": "timezonefinder-coordinate-lookup",
+      "timezone_id": "America/Chicago",
+      "venue_id": "5325",
+      "venue_name": "Globe Life Field"
+    },
+    {
+      "latitude": 31.5156,
+      "longitude": -82.5269,
+      "source_coordinates": "MLB-StatsAPI-venue-location",
+      "source_timezone": "timezonefinder-coordinate-lookup",
+      "timezone_id": "America/New_York",
+      "venue_id": "6130",
+      "venue_name": "Bristol Motor Speedway"
+    }
+  ]
 }
