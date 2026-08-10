@@ -1,0 +1,35 @@
+name: v1.1 Replay Semantics Lock
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip pandas numpy pytest
+
+      - name: Run tests
+        run: pytest -q
+
+      - name: Lock replay semantics
+        run: python run_v11_replay_semantics_lock.py
+
+      - name: Upload semantics report
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: v11-replay-semantics-lock
+          if-no-files-found: warn
+          path: v11_replay_semantics_report.json
