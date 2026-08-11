@@ -1,0 +1,38 @@
+name: v1.1 Structural Default Replay
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip pandas numpy pytest
+
+      - name: Run tests
+        run: pytest -q
+
+      - name: Run structural-default v1.1 replay
+        run: python run_v11_structural_default_replay.py
+
+      - name: Upload replay artifacts
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: v11-structural-default-replay
+          if-no-files-found: warn
+          path: |
+            v11_structural_default_probability_ledger.jsonl
+            v11_structural_default_replay_report.json
