@@ -1,6 +1,6 @@
 from mlb_bulk_schedule_runtime import month_chunks, completed_games_chunked
 
-def fake_payload(game_pk, date_str):
+def fake_payload(game_pk, date_str, away_score=3, home_score=4):
     return {
         "dates":[{
             "date":date_str,
@@ -9,8 +9,8 @@ def fake_payload(game_pk, date_str):
                 "gameDate":date_str+"T18:00:00Z",
                 "status":{"abstractGameState":"Final","detailedState":"Final"},
                 "teams":{
-                    "away":{"team":{"id":1},"score":3},
-                    "home":{"team":{"id":2},"score":4},
+                    "away":{"team":{"id":1},"score":away_score},
+                    "home":{"team":{"id":2},"score":home_score},
                 },
                 "venue":{"id":31},
             }],
@@ -55,3 +55,14 @@ def test_chunked_fetch_retains_distinct_games():
     )
     assert len(games)==2
     assert [g["game_pk"] for g in games]==["101","102"]
+
+def test_final_status_without_score_is_not_completed_observation():
+    def fetcher(url):
+        return fake_payload(999,"2025-01-10",away_score=None,home_score=4)
+
+    games,stats=completed_games_chunked(
+        "2025-01-01","2025-01-31",fetcher=fetcher
+    )
+
+    assert games == []
+    assert stats[0]["completed_games"] == 0

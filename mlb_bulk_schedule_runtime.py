@@ -38,14 +38,25 @@ def _extract_completed(payload):
             detailed=g.get("status",{}).get("detailedState","")
             if state!="Final" and "Final" not in detailed:
                 continue
+
+            away_runs=g["teams"]["away"].get("score")
+            home_runs=g["teams"]["home"].get("score")
+
+            # Historical replay state must only consume games with an actual
+            # final score. MLB can occasionally expose a Final-status schedule
+            # record without populated score fields; those records are not
+            # valid completed-game observations for model-state reconstruction.
+            if away_runs is None or home_runs is None:
+                continue
+
             out.append({
                 "game_pk":str(g["gamePk"]),
                 "game_date":block.get("date"),
                 "game_time_utc":g.get("gameDate"),
                 "away_team_id":str(g["teams"]["away"]["team"]["id"]),
                 "home_team_id":str(g["teams"]["home"]["team"]["id"]),
-                "away_runs":g["teams"]["away"].get("score"),
-                "home_runs":g["teams"]["home"].get("score"),
+                "away_runs":away_runs,
+                "home_runs":home_runs,
                 "venue_id":(
                     str((g.get("venue") or {}).get("id"))
                     if (g.get("venue") or {}).get("id") is not None

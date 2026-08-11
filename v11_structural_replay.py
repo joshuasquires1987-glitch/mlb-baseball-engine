@@ -21,6 +21,26 @@ def _dt(v):
 def sigmoid(x):
     return 1.0 / (1.0 + math.exp(-max(-35.0, min(35.0, float(x)))))
 
+def _validated_final_score(g):
+    hr = g.get("home_runs")
+    ar = g.get("away_runs")
+    if hr is None or ar is None:
+        raise ValueError(
+            f"missing final score: home_runs={hr!r}, away_runs={ar!r}"
+        )
+    try:
+        hr = float(hr)
+        ar = float(ar)
+    except (TypeError, ValueError) as e:
+        raise ValueError(
+            f"invalid final score: home_runs={hr!r}, away_runs={ar!r}"
+        ) from e
+    if not math.isfinite(hr) or not math.isfinite(ar):
+        raise ValueError(
+            f"non-finite final score: home_runs={hr!r}, away_runs={ar!r}"
+        )
+    return hr, ar
+
 def state_features(target, starter_history, team_history, bullpen_history):
     cutoff = _dt(target["game_time_utc"])
     hs = str(target["home_probable_starter_id"])
@@ -63,9 +83,11 @@ class ReplayState:
         self.bullpens = defaultdict(list)
 
     def add_completed_game(self, g):
+        # Validate before mutating any replay state so malformed historical
+        # records cannot partially contaminate team/starter/bullpen histories.
+        hr, ar = _validated_final_score(g)
         gt = _dt(g["game_time_utc"])
         ht, at = str(g["home_team_id"]), str(g["away_team_id"])
-        hr, ar = float(g["home_runs"]), float(g["away_runs"])
 
         self.teams[ht].append({"date": gt, "runs_for": hr, "runs_against": ar})
         self.teams[at].append({"date": gt, "runs_for": ar, "runs_against": hr})
@@ -90,15 +112,28 @@ def replay_2025(parsed_games, target_snapshots, weights):
     state = ReplayState()
     warmup = [g for g in parsed_games if str(g["game_date"]).startswith("2024")]
     finals_2025 = {str(g["game_pk"]): g for g in parsed_games if str(g["game_date"]).startswith("2025")}
+    rows, failures = [], []
+
+    def add_state_game(g, phase):
+        try:
+            state.add_completed_game(g)
+            return True
+        except Exception as e:
+            failures.append({
+                "game_pk": str(g.get("game_pk", "")),
+                "reason": f"state-ingest-{phase}:{type(e).__name__}",
+                "detail": str(e)[:300],
+                "home_runs": g.get("home_runs"),
+                "away_runs": g.get("away_runs"),
+            })
+            return False
 
     for g in sorted(warmup, key=lambda x: x["game_time_utc"]):
-        state.add_completed_game(g)
+        add_state_game(g, "warmup")
 
     by_date = defaultdict(list)
     for s in target_snapshots:
         by_date[str(s["game_date"])].append(s)
-
-    rows, failures = [], []
 
     for day in sorted(by_date):
         targets = sorted(by_date[day], key=lambda x: (x["game_time_utc"], str(x["game_pk"])))
@@ -134,6 +169,6 @@ def replay_2025(parsed_games, target_snapshots, weights):
         for s in targets:
             g = finals_2025.get(str(s["game_pk"]))
             if g is not None:
-                state.add_completed_game(g)
+                add_state_game(g, "target-final")
 
     return rows, failures
