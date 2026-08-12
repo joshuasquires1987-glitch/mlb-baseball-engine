@@ -15,14 +15,6 @@ def final_feed_url(game_pk):
     return f"{BASE}/game/{game_pk}/feed/live"
 
 def normalize_snapshot(row, line_number=None):
-    """
-    Adapt certified historical snapshot schema to the replay contract.
-
-    BT-0080/BT-0082 snapshots store the scheduled timestamp as
-    `scheduled_game_time_utc`. The structural replay consumes the canonical
-    field `game_time_utc`. Preserve the original field and add the canonical
-    alias rather than rewriting the historical artifact.
-    """
     row = dict(row)
     if not row.get("game_time_utc"):
         scheduled = row.get("scheduled_game_time_utc")
@@ -57,6 +49,24 @@ def load_snapshots(path):
 def fetch_parse(game):
     return parse_final_feed(game, fetch_json(final_feed_url(game["game_pk"])))
 
+def pitching_event_coverage(parsed_games):
+    rows = [
+        p
+        for g in parsed_games
+        for p in g.get("pitching_rows", [])
+        if int(p.get("p_gs", 0)) > 0
+    ]
+    fields = ("p_bfp", "p_so", "p_bb", "p_hr", "p_hbp")
+    coverage = {}
+    for field in fields:
+        present = sum(field in p and p.get(field) is not None for p in rows)
+        coverage[field] = {
+            "starter_rows": len(rows),
+            "present": present,
+            "coverage_rate": present / len(rows) if rows else 0.0,
+        }
+    return coverage
+
 def main():
     games, _ = completed_games_chunked("2024-03-20", "2025-09-28")
     snapshots = load_snapshots("pregame_lineup_snapshots.jsonl")
@@ -87,18 +97,21 @@ def main():
                     flush=True,
                 )
 
+    event_coverage = pitching_event_coverage(parsed)
     cfg = json.loads(Path("v1_1.json").read_text())
     rows, replay_failures = replay_2025(parsed, snapshots, cfg["weights"])
 
     if len(rows) < MIN_EXPECTED:
-        raise RuntimeError(f"structural replay coverage failed: only {len(rows)} rows")
+        raise RuntimeError(
+            f"structural replay coverage failed: only {len(rows)} rows"
+        )
 
     with open("v11_structural_default_probability_ledger.jsonl", "w") as f:
         for r in rows:
             f.write(json.dumps(r, separators=(",", ":")) + "\n")
 
     report = {
-        "version": "BT-0087",
+        "version": "BT-0090",
         "baseline_label": "v1.1-structural-default-replay",
         "exact_historical_v11_probability": False,
         "2024_warmup_games": sum(
@@ -113,6 +126,12 @@ def main():
             "game_time_utc canonical; scheduled_game_time_utc accepted as "
             "certified historical alias"
         ),
+        "pitching_event_contract": {
+            "purpose": "C002 research prerequisite only",
+            "fields_added": ["p_so", "p_bb", "p_hr", "p_hbp"],
+            "starter_field_coverage": event_coverage,
+            "v11_probability_logic_changed": False,
+        },
         "context_defaults": {
             "home_field": 0.10,
             "park": 0.0,

@@ -22,6 +22,10 @@ def parse_team_pitching(team_box, team_id, game_time_utc):
             "p_bfp": float(stats.get("battersFaced", 0) or 0),
             "p_r": float(stats.get("runs", 0) or 0),
             "p_ipouts": float(innings_to_outs(stats.get("inningsPitched", "0.0"))),
+            "p_so": float(stats.get("strikeOuts", 0) or 0),
+            "p_bb": float(stats.get("baseOnBalls", 0) or 0),
+            "p_hr": float(stats.get("homeRuns", 0) or 0),
+            "p_hbp": float(stats.get("hitBatsmen", 0) or 0),
             "source_exact": True,
         })
     return rows
@@ -29,8 +33,16 @@ def parse_team_pitching(team_box, team_id, game_time_utc):
 def parse_final_feed(game, feed):
     box = (((feed.get("liveData") or {}).get("boxscore") or {}).get("teams") or {})
     pitching = []
-    pitching += parse_team_pitching(box.get("away") or {}, game["away_team_id"], game["game_time_utc"])
-    pitching += parse_team_pitching(box.get("home") or {}, game["home_team_id"], game["game_time_utc"])
+    pitching += parse_team_pitching(
+        box.get("away") or {},
+        game["away_team_id"],
+        game["game_time_utc"],
+    )
+    pitching += parse_team_pitching(
+        box.get("home") or {},
+        game["home_team_id"],
+        game["game_time_utc"],
+    )
     return {
         "game_pk": str(game["game_pk"]),
         "game_date": game["game_date"],

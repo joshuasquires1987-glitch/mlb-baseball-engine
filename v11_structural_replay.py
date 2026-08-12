@@ -83,8 +83,6 @@ class ReplayState:
         self.bullpens = defaultdict(list)
 
     def add_completed_game(self, g):
-        # Validate before mutating any replay state so malformed historical
-        # records cannot partially contaminate team/starter/bullpen histories.
         hr, ar = _validated_final_score(g)
         gt = _dt(g["game_time_utc"])
         ht, at = str(g["home_team_id"]), str(g["away_team_id"])
@@ -100,6 +98,11 @@ class ReplayState:
                     "batters_faced": float(p.get("p_bfp", 0)),
                     "runs_allowed": float(p.get("p_r", 0)),
                     "outs": float(p.get("p_ipouts", 0)),
+                    # BT-0090 research fields. Existing v1.1 calculator ignores them.
+                    "strikeouts": float(p.get("p_so", 0)),
+                    "walks": float(p.get("p_bb", 0)),
+                    "home_runs": float(p.get("p_hr", 0)),
+                    "hit_batters": float(p.get("p_hbp", 0)),
                 })
             else:
                 self.bullpens[team].append({
@@ -111,7 +114,11 @@ class ReplayState:
 def replay_2025(parsed_games, target_snapshots, weights):
     state = ReplayState()
     warmup = [g for g in parsed_games if str(g["game_date"]).startswith("2024")]
-    finals_2025 = {str(g["game_pk"]): g for g in parsed_games if str(g["game_date"]).startswith("2025")}
+    finals_2025 = {
+        str(g["game_pk"]): g
+        for g in parsed_games
+        if str(g["game_date"]).startswith("2025")
+    }
     rows, failures = [], []
 
     def add_state_game(g, phase):
@@ -136,12 +143,20 @@ def replay_2025(parsed_games, target_snapshots, weights):
         by_date[str(s["game_date"])].append(s)
 
     for day in sorted(by_date):
-        targets = sorted(by_date[day], key=lambda x: (x["game_time_utc"], str(x["game_pk"])))
+        targets = sorted(
+            by_date[day],
+            key=lambda x: (x["game_time_utc"], str(x["game_pk"])),
+        )
 
         # Conservative anti-leakage rule: no same-calendar-day results are used.
         for s in targets:
             try:
-                f = state_features(s, state.starters, state.teams, state.bullpens)
+                f = state_features(
+                    s,
+                    state.starters,
+                    state.teams,
+                    state.bullpens,
+                )
                 p, score = probability(f, weights)
                 rows.append({
                     "game_pk": str(s["game_pk"]),
