@@ -1,0 +1,57 @@
+name: Full Slate Probability Freeze
+
+on:
+  workflow_dispatch:
+    inputs:
+      game_date:
+        description: "MLB slate date (YYYY-MM-DD)"
+        required: true
+        type: string
+      secondary_starter_map_path:
+        description: "Optional repo path to gamePk-keyed independent starter confirmation map"
+        required: false
+        default: ""
+        type: string
+
+jobs:
+  slate-freeze:
+    runs-on: ubuntu-24.04
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip pandas numpy pytest
+
+      - name: Run tests
+        run: pytest -q
+
+      - name: Run market-blind full-slate freeze
+        shell: bash
+        run: |
+          if [ -n "${{ inputs.secondary_starter_map_path }}" ]; then
+            test -f "${{ inputs.secondary_starter_map_path }}"
+            python live_slate_freezer.py \
+              --date "${{ inputs.game_date }}" \
+              --secondary-starter-map "${{ inputs.secondary_starter_map_path }}"
+          else
+            python live_slate_freezer.py \
+              --date "${{ inputs.game_date }}"
+          fi
+
+      - name: Upload full-slate artifacts
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: full-slate-freeze-${{ inputs.game_date }}
+          path: live_slate_artifacts/
+          if-no-files-found: error
