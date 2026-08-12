@@ -1,0 +1,28 @@
+{
+  "game_pk": "REPLACE_GAME_PK",
+  "verified_at_utc": "REPLACE_VERIFICATION_TIMESTAMP",
+  "home_starter_id": "REPLACE_HOME_STARTER_ID",
+  "away_starter_id": "REPLACE_AWAY_STARTER_ID",
+  "lights": {
+    "starter": "green",
+    "lineup": "green",
+    "bullpen": "green",
+    "weather": "green",
+    "roster_news": "green",
+    "umpire": "yellow"
+  },
+  "evidence": {
+    "starter": "REPLACE_WITH_VERIFIED_SOURCE_NOTE",
+    "lineup": "REPLACE_WITH_VERIFIED_SOURCE_NOTE",
+    "bullpen": "REPLACE_WITH_VERIFIED_SOURCE_NOTE",
+    "weather": "REPLACE_WITH_VERIFIED_SOURCE_NOTE",
+    "roster_news": "REPLACE_WITH_VERIFIED_SOURCE_NOTE"
+  },
+  "context": {
+    "home_field_score": 0.10,
+    "park_score": 0.0,
+    "weather_score": 0.0,
+    "travel_rest_score": 0.0,
+    "platoon_score": 0.0
+  }
+}
