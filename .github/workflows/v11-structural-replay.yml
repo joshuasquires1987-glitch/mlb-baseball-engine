@@ -34,7 +34,10 @@ jobs:
       - name: Run benchmark diagnostics
         run: python run_v11_structural_diagnostics.py
 
-      - name: Upload replay, benchmark, and diagnostic artifacts
+      - name: Run C001 prior-season home-baseline challenger
+        run: python run_c001_prior_season_home_baseline.py
+
+      - name: Upload replay, benchmark, diagnostics, and challenger artifacts
         if: always()
         uses: actions/upload-artifact@v5
         with:
@@ -48,4 +51,6 @@ jobs:
             v11_structural_default_subgroups.csv
             v11_structural_default_diagnostic_report.json
             v11_structural_default_diagnostic_groups.csv
+            c001_prior_season_home_baseline_report.json
+            c001_prior_season_home_baseline_scored_games.jsonl
           if-no-files-found: warn
