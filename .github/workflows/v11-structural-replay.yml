@@ -28,7 +28,10 @@ jobs:
       - name: Run structural-default v1.1 replay
         run: python run_v11_structural_default_replay.py
 
-      - name: Upload replay artifacts
+      - name: Run v1.1 structural benchmark
+        run: python run_v11_structural_benchmark.py
+
+      - name: Upload replay and benchmark artifacts
         if: always()
         uses: actions/upload-artifact@v5
         with:
@@ -36,4 +39,8 @@ jobs:
           path: |
             v11_structural_default_probability_ledger.jsonl
             v11_structural_default_replay_report.json
+            v11_structural_default_scored_games.jsonl
+            v11_structural_default_benchmark_report.json
+            v11_structural_default_calibration.csv
+            v11_structural_default_subgroups.csv
           if-no-files-found: warn
