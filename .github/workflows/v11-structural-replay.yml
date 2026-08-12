@@ -37,6 +37,9 @@ jobs:
       - name: Run C001 prior-season home-baseline challenger
         run: python run_c001_prior_season_home_baseline.py
 
+      - name: Run C002a starter talent v2 challenger
+        run: python run_c002a_starter_talent_v2.py
+
       - name: Upload replay, benchmark, diagnostics, and challenger artifacts
         if: always()
         uses: actions/upload-artifact@v5
@@ -53,4 +56,6 @@ jobs:
             v11_structural_default_diagnostic_groups.csv
             c001_prior_season_home_baseline_report.json
             c001_prior_season_home_baseline_scored_games.jsonl
+            c002a_starter_talent_v2_report.json
+            c002a_starter_talent_v2_scored_games.jsonl
           if-no-files-found: warn
