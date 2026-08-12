@@ -17,18 +17,22 @@
     "venue_id": "3313",
     "venue_name": "Yankee Stadium"
   },
-  "observed_at_utc": "2026-08-12T19:34:46.536371+00:00",
+  "observed_at_utc": "2026-08-12T20:15:39.967081+00:00",
   "integrity": {
     "starter": {
-      "light": "yellow",
+      "light": "green",
       "home_starter_id": "701542",
       "away_starter_id": "682243",
       "official_schedule_home": "701542",
       "official_schedule_away": "682243",
       "official_feed_home": "701542",
       "official_feed_away": "682243",
-      "secondary": null,
-      "note": "MLB schedule and live feed agree, but no independent second-source starter confirmation was supplied."
+      "secondary": {
+        "home_starter_id": "701542",
+        "away_starter_id": "682243",
+        "source": "Independent confirmation on 2026-08-12: Pinstripe Alley and Lookout Landing both list New York Yankees starter Will Warren vs Seattle Mariners starter Bryce Miller for the Aug. 12, 2026 game."
+      },
+      "note": "MLB schedule/live-feed probable starters agree and a second reliable source independently confirms both starters."
     },
     "lineup": {
       "light": "green",
@@ -64,13 +68,13 @@
       "light": "green",
       "forecast": {
         "forecast_hour_utc": "2026-08-12T23:00:00+00:00",
-        "temperature_2m_c": 29.8,
+        "temperature_2m_c": 29.6,
         "relative_humidity_2m_pct": 39,
         "precipitation_probability_pct": 1,
         "precipitation_mm": 0.0,
         "surface_pressure_hpa": 1009.3,
-        "wind_speed_10m_kmh": 1.1,
-        "wind_direction_10m_deg": 180
+        "wind_speed_10m_kmh": 2.3,
+        "wind_direction_10m_deg": 231
       },
       "note": "Open-Meteo hourly forecast matched to scheduled first-pitch hour."
     },
@@ -105,13 +109,13 @@
   "context_raw": {
     "weather": {
       "forecast_hour_utc": "2026-08-12T23:00:00+00:00",
-      "temperature_2m_c": 29.8,
+      "temperature_2m_c": 29.6,
       "relative_humidity_2m_pct": 39,
       "precipitation_probability_pct": 1,
       "precipitation_mm": 0.0,
       "surface_pressure_hpa": 1009.3,
-      "wind_speed_10m_kmh": 1.1,
-      "wind_direction_10m_deg": 180
+      "wind_speed_10m_kmh": 2.3,
+      "wind_direction_10m_deg": 231
     },
     "venue_id": "3313",
     "venue_name": "Yankee Stadium",
@@ -134,11 +138,11 @@
   },
   "manifest": {
     "game_pk": "823511",
-    "verified_at_utc": "2026-08-12T19:34:46.536371+00:00",
+    "verified_at_utc": "2026-08-12T20:15:39.967081+00:00",
     "home_starter_id": "701542",
     "away_starter_id": "682243",
     "lights": {
-      "starter": "yellow",
+      "starter": "green",
       "lineup": "green",
       "bullpen": "green",
       "weather": "green",
@@ -146,7 +150,7 @@
       "umpire": "yellow"
     },
     "evidence": {
-      "starter": "MLB schedule and live feed agree, but no independent second-source starter confirmation was supplied.",
+      "starter": "MLB schedule/live-feed probable starters agree and a second reliable source independently confirms both starters.",
       "lineup": "MLB live-feed boxscore contains nine-player batting orders for both teams.",
       "bullpen": "Official active-roster context is present; BT-0092 separately reconstructs bullpen performance/workload from prior completed MLB games.",
       "weather": "Open-Meteo hourly forecast matched to scheduled first-pitch hour.",
@@ -160,7 +164,7 @@
       "platoon_score": 0.0
     }
   },
-  "manifest_ready_for_BT_0092": false,
+  "manifest_ready_for_BT_0092": true,
   "prices_seen": false,
   "sportsbook_fields_present": false,
   "production_weights_changed": false
