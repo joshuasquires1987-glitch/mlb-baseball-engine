@@ -14,8 +14,45 @@ MIN_EXPECTED = 2200
 def final_feed_url(game_pk):
     return f"{BASE}/game/{game_pk}/feed/live"
 
+def normalize_snapshot(row, line_number=None):
+    """
+    Adapt certified historical snapshot schema to the replay contract.
+
+    BT-0080/BT-0082 snapshots store the scheduled timestamp as
+    `scheduled_game_time_utc`. The structural replay consumes the canonical
+    field `game_time_utc`. Preserve the original field and add the canonical
+    alias rather than rewriting the historical artifact.
+    """
+    row = dict(row)
+    if not row.get("game_time_utc"):
+        scheduled = row.get("scheduled_game_time_utc")
+        if scheduled:
+            row["game_time_utc"] = scheduled
+
+    required = (
+        "game_pk",
+        "game_date",
+        "game_time_utc",
+        "home_team_id",
+        "away_team_id",
+        "home_probable_starter_id",
+        "away_probable_starter_id",
+    )
+    missing = [k for k in required if row.get(k) in (None, "")]
+    if missing:
+        where = f" on line {line_number}" if line_number is not None else ""
+        raise ValueError(
+            f"snapshot schema invalid{where}: missing {','.join(missing)}"
+        )
+    return row
+
 def load_snapshots(path):
-    return [json.loads(x) for x in Path(path).read_text().splitlines() if x.strip()]
+    rows = []
+    for i, line in enumerate(Path(path).read_text().splitlines(), 1):
+        if not line.strip():
+            continue
+        rows.append(normalize_snapshot(json.loads(line), line_number=i))
+    return rows
 
 def fetch_parse(game):
     return parse_final_feed(game, fetch_json(final_feed_url(game["game_pk"])))
@@ -44,7 +81,11 @@ def main():
                     "detail": str(e)[:300],
                 })
             if i % 100 == 0 or i == len(futures):
-                print(f"feeds={i}/{len(futures)} parsed={len(parsed)} failures={len(fetch_failures)}", flush=True)
+                print(
+                    f"feeds={i}/{len(futures)} parsed={len(parsed)} "
+                    f"failures={len(fetch_failures)}",
+                    flush=True,
+                )
 
     cfg = json.loads(Path("v1_1.json").read_text())
     rows, replay_failures = replay_2025(parsed, snapshots, cfg["weights"])
@@ -60,12 +101,18 @@ def main():
         "version": "BT-0087",
         "baseline_label": "v1.1-structural-default-replay",
         "exact_historical_v11_probability": False,
-        "2024_warmup_games": sum(str(g["game_date"]).startswith("2024") for g in parsed),
+        "2024_warmup_games": sum(
+            str(g["game_date"]).startswith("2024") for g in parsed
+        ),
         "target_snapshots": len(snapshots),
         "ledger_rows": len(rows),
         "feed_failures": len(fetch_failures),
         "replay_failures": len(replay_failures),
         "same_day_results_used": False,
+        "snapshot_timestamp_contract": (
+            "game_time_utc canonical; scheduled_game_time_utc accepted as "
+            "certified historical alias"
+        ),
         "context_defaults": {
             "home_field": 0.10,
             "park": 0.0,
@@ -77,7 +124,9 @@ def main():
         "fetch_failure_examples": fetch_failures[:25],
         "replay_failure_examples": replay_failures[:25],
     }
-    Path("v11_structural_default_replay_report.json").write_text(json.dumps(report, indent=2))
+    Path("v11_structural_default_replay_report.json").write_text(
+        json.dumps(report, indent=2)
+    )
     print(json.dumps(report, indent=2))
 
 if __name__ == "__main__":
