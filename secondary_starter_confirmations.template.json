@@ -1,0 +1,7 @@
+{
+  "REPLACE_GAME_PK": {
+    "home_starter_id": "REPLACE_HOME_STARTER_ID",
+    "away_starter_id": "REPLACE_AWAY_STARTER_ID",
+    "source": "REPLACE_INDEPENDENT_RELIABLE_SOURCE_AND_TIMESTAMP"
+  }
+}
