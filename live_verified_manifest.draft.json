@@ -1,0 +1,28 @@
+{
+  "game_pk": "823511",
+  "verified_at_utc": "2026-08-12T19:34:46.536371+00:00",
+  "home_starter_id": "701542",
+  "away_starter_id": "682243",
+  "lights": {
+    "starter": "yellow",
+    "lineup": "green",
+    "bullpen": "green",
+    "weather": "green",
+    "roster_news": "green",
+    "umpire": "yellow"
+  },
+  "evidence": {
+    "starter": "MLB schedule and live feed agree, but no independent second-source starter confirmation was supplied.",
+    "lineup": "MLB live-feed boxscore contains nine-player batting orders for both teams.",
+    "bullpen": "Official active-roster context is present; BT-0092 separately reconstructs bullpen performance/workload from prior completed MLB games.",
+    "weather": "Open-Meteo hourly forecast matched to scheduled first-pitch hour.",
+    "roster_news": "Official MLB active rosters loaded for both teams; recent MLB transactions captured for audit."
+  },
+  "context": {
+    "home_field_score": 0.1,
+    "park_score": 0.0,
+    "weather_score": 0.0,
+    "travel_rest_score": 0.0,
+    "platoon_score": 0.0
+  }
+}

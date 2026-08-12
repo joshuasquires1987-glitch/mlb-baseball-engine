@@ -1,0 +1,167 @@
+{
+  "schema": "BT-0093a",
+  "game": {
+    "game_pk": "823511",
+    "game_date": "2026-08-12",
+    "game_time_utc": "2026-08-12T23:05:00Z",
+    "status_abstract": "Preview",
+    "status_detailed": "Pre-Game",
+    "home_team_id": "147",
+    "away_team_id": "136",
+    "home_team_name": "New York Yankees",
+    "away_team_name": "Seattle Mariners",
+    "home_probable_starter_id": "701542",
+    "away_probable_starter_id": "682243",
+    "home_probable_starter_name": "Will Warren",
+    "away_probable_starter_name": "Bryce Miller",
+    "venue_id": "3313",
+    "venue_name": "Yankee Stadium"
+  },
+  "observed_at_utc": "2026-08-12T19:34:46.536371+00:00",
+  "integrity": {
+    "starter": {
+      "light": "yellow",
+      "home_starter_id": "701542",
+      "away_starter_id": "682243",
+      "official_schedule_home": "701542",
+      "official_schedule_away": "682243",
+      "official_feed_home": "701542",
+      "official_feed_away": "682243",
+      "secondary": null,
+      "note": "MLB schedule and live feed agree, but no independent second-source starter confirmation was supplied."
+    },
+    "lineup": {
+      "light": "green",
+      "home_batting_order": [
+        "663757",
+        "700250",
+        "682987",
+        "671277",
+        "671218",
+        "665862",
+        "641857",
+        "669224",
+        "806146"
+      ],
+      "away_batting_order": [
+        "621493",
+        "702284",
+        "668227",
+        "686527",
+        "677594",
+        "647304",
+        "680977",
+        "663728",
+        "806068"
+      ],
+      "note": "MLB live-feed boxscore contains nine-player batting orders for both teams."
+    },
+    "bullpen": {
+      "light": "green",
+      "note": "Official active-roster context is present; BT-0092 separately reconstructs bullpen performance/workload from prior completed MLB games."
+    },
+    "weather": {
+      "light": "green",
+      "forecast": {
+        "forecast_hour_utc": "2026-08-12T23:00:00+00:00",
+        "temperature_2m_c": 29.8,
+        "relative_humidity_2m_pct": 39,
+        "precipitation_probability_pct": 1,
+        "precipitation_mm": 0.0,
+        "surface_pressure_hpa": 1009.3,
+        "wind_speed_10m_kmh": 1.1,
+        "wind_direction_10m_deg": 180
+      },
+      "note": "Open-Meteo hourly forecast matched to scheduled first-pitch hour."
+    },
+    "roster_news": {
+      "light": "green",
+      "home_active_roster_count": 26,
+      "away_active_roster_count": 26,
+      "home_recent_transaction_count": 6,
+      "away_recent_transaction_count": 13,
+      "note": "Official MLB active rosters loaded for both teams; recent MLB transactions captured for audit."
+    },
+    "umpire": {
+      "light": "yellow",
+      "note": "Optional/non-blocking; no umpire source collected."
+    }
+  },
+  "source_urls": {
+    "mlb_live_feed": "https://statsapi.mlb.com/api/v1.1/game/823511/feed/live",
+    "mlb_venue": "https://statsapi.mlb.com/api/v1/venues/3313",
+    "mlb_venue_hydrated": null,
+    "open_meteo": "https://api.open-meteo.com/v1/forecast?latitude=40.82919482&longitude=-73.9264977&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation_probability%2Cprecipitation%2Csurface_pressure%2Cwind_speed_10m%2Cwind_direction_10m&timezone=UTC&start_date=2026-08-12&end_date=2026-08-12",
+    "home_active_roster": "https://statsapi.mlb.com/api/v1/teams/147/roster?rosterType=active&date=2026-08-12",
+    "away_active_roster": "https://statsapi.mlb.com/api/v1/teams/136/roster?rosterType=active&date=2026-08-12",
+    "home_transactions": "https://statsapi.mlb.com/api/v1/transactions?teamId=147&startDate=2026-08-05&endDate=2026-08-12",
+    "away_transactions": "https://statsapi.mlb.com/api/v1/transactions?teamId=136&startDate=2026-08-05&endDate=2026-08-12"
+  },
+  "venue_coordinates": {
+    "latitude": 40.82919482,
+    "longitude": -73.9264977,
+    "source": "mlb_live_feed"
+  },
+  "context_raw": {
+    "weather": {
+      "forecast_hour_utc": "2026-08-12T23:00:00+00:00",
+      "temperature_2m_c": 29.8,
+      "relative_humidity_2m_pct": 39,
+      "precipitation_probability_pct": 1,
+      "precipitation_mm": 0.0,
+      "surface_pressure_hpa": 1009.3,
+      "wind_speed_10m_kmh": 1.1,
+      "wind_direction_10m_deg": 180
+    },
+    "venue_id": "3313",
+    "venue_name": "Yankee Stadium",
+    "travel_rest": {
+      "status": "raw-schedule-reconstruction-deferred"
+    },
+    "park": {
+      "status": "raw-venue-known-production-mapping-not-estimated"
+    }
+  },
+  "production_context_policy": {
+    "scores": {
+      "home_field_score": 0.1,
+      "park_score": 0.0,
+      "weather_score": 0.0,
+      "travel_rest_score": 0.0,
+      "platoon_score": 0.0
+    },
+    "reason": "No validated production mapping exists yet for raw park/weather/travel context, so frozen v1.1 structural defaults are preserved."
+  },
+  "manifest": {
+    "game_pk": "823511",
+    "verified_at_utc": "2026-08-12T19:34:46.536371+00:00",
+    "home_starter_id": "701542",
+    "away_starter_id": "682243",
+    "lights": {
+      "starter": "yellow",
+      "lineup": "green",
+      "bullpen": "green",
+      "weather": "green",
+      "roster_news": "green",
+      "umpire": "yellow"
+    },
+    "evidence": {
+      "starter": "MLB schedule and live feed agree, but no independent second-source starter confirmation was supplied.",
+      "lineup": "MLB live-feed boxscore contains nine-player batting orders for both teams.",
+      "bullpen": "Official active-roster context is present; BT-0092 separately reconstructs bullpen performance/workload from prior completed MLB games.",
+      "weather": "Open-Meteo hourly forecast matched to scheduled first-pitch hour.",
+      "roster_news": "Official MLB active rosters loaded for both teams; recent MLB transactions captured for audit."
+    },
+    "context": {
+      "home_field_score": 0.1,
+      "park_score": 0.0,
+      "weather_score": 0.0,
+      "travel_rest_score": 0.0,
+      "platoon_score": 0.0
+    }
+  },
+  "manifest_ready_for_BT_0092": false,
+  "prices_seen": false,
+  "sportsbook_fields_present": false,
+  "production_weights_changed": false
+}
