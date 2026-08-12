@@ -10,8 +10,11 @@ def game_feed_url(game_pk):
     return f"https://statsapi.mlb.com/api/v1.1/game/{game_pk}/feed/live"
 
 
-def venue_url(venue_id):
-    return f"{MLB_BASE}/venues/{venue_id}"
+def venue_url(venue_id, hydrate=False):
+    url = f"{MLB_BASE}/venues/{venue_id}"
+    if hydrate:
+        url += "?" + urlencode({"hydrate": "location"})
+    return url
 
 
 def roster_url(team_id, game_date, roster_type="active"):
@@ -65,16 +68,34 @@ def fetched_at_utc():
     return datetime.now(timezone.utc).isoformat()
 
 
+def _coordinates_from_location(location):
+    location = location or {}
+    candidates = [
+        location.get("defaultCoordinates") or {},
+        location.get("coordinates") or {},
+        location,
+    ]
+    for obj in candidates:
+        lat = obj.get("latitude")
+        lon = obj.get("longitude")
+        if lon is None:
+            lon = obj.get("longitude")
+        if lat is not None and lon is not None:
+            return float(lat), float(lon)
+    return None
+
+
 def venue_coordinates(payload):
     venues = payload.get("venues") or []
     if not venues:
         return None
-    loc = (venues[0].get("location") or {}).get("defaultCoordinates") or {}
-    lat = loc.get("latitude")
-    lon = loc.get("longitude")
-    if lat is None or lon is None:
-        return None
-    return float(lat), float(lon)
+    venue = venues[0] or {}
+    return _coordinates_from_location(venue.get("location"))
+
+
+def feed_venue_coordinates(feed):
+    venue = ((feed.get("gameData") or {}).get("venue") or {})
+    return _coordinates_from_location(venue.get("location"))
 
 
 def lineup_from_feed(feed):

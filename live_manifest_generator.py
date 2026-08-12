@@ -1,11 +1,11 @@
 import argparse
 import json
-from datetime import datetime, timezone
 from pathlib import Path
 
 from live_manifest_sources import (
     active_roster_ids,
     closest_hourly_weather,
+    feed_venue_coordinates,
     fetch_external_json,
     fetched_at_utc,
     game_feed_url,
@@ -155,8 +155,6 @@ def weather_evidence(weather):
 
 
 def bullpen_evidence(home_roster, away_roster):
-    # v1.1 broad bullpen history is assembled later from prior completed games.
-    # This light checks that today's official active-roster context is present.
     home_ids = active_roster_ids(home_roster)
     away_ids = active_roster_ids(away_roster)
     complete = len(home_ids) >= 20 and len(away_ids) >= 20
@@ -171,18 +169,41 @@ def bullpen_evidence(home_roster, away_roster):
     }
 
 
+def resolve_venue_coordinates(game, feed, venue_payload, venue_hydrated_payload=None):
+    attempts = [
+        ("mlb_venue", venue_coordinates(venue_payload)),
+        ("mlb_live_feed", feed_venue_coordinates(feed)),
+    ]
+    if venue_hydrated_payload is not None:
+        attempts.append(("mlb_venue_hydrated", venue_coordinates(venue_hydrated_payload)))
+
+    for source, coords in attempts:
+        if coords:
+            return coords, source
+    return None, None
+
+
 def build_manifest_evidence(game_date, game_pk, secondary_starter=None):
     game = find_game(game_date, game_pk)
     observed_at = fetched_at_utc()
 
     feed_url = game_feed_url(game_pk)
     feed = fetch_external_json(feed_url)
-
     feed_starters = probable_starters_from_feed(feed)
     lineup = lineup_from_feed(feed)
 
-    venue_payload = fetch_external_json(venue_url(game["venue_id"]))
-    coords = venue_coordinates(venue_payload)
+    venue_primary_url = venue_url(game["venue_id"])
+    venue_payload = fetch_external_json(venue_primary_url)
+
+    coords, coords_source = resolve_venue_coordinates(game, feed, venue_payload)
+    venue_hydrated_url = None
+    if not coords:
+        venue_hydrated_url = venue_url(game["venue_id"], hydrate=True)
+        venue_hydrated_payload = fetch_external_json(venue_hydrated_url)
+        coords, coords_source = resolve_venue_coordinates(
+            game, feed, venue_payload, venue_hydrated_payload
+        )
+
     weather = None
     weather_url = None
     if coords:
@@ -239,8 +260,8 @@ def build_manifest_evidence(game_date, game_pk, secondary_starter=None):
         for k in ("starter", "lineup", "bullpen", "weather", "roster_news")
     )
 
-    report = {
-        "schema": "BT-0093",
+    return {
+        "schema": "BT-0093a",
         "game": game,
         "observed_at_utc": observed_at,
         "integrity": {
@@ -251,12 +272,13 @@ def build_manifest_evidence(game_date, game_pk, secondary_starter=None):
             "roster_news": roster,
             "umpire": {
                 "light": "yellow",
-                "note": "Optional/non-blocking; no umpire source collected in BT-0093.",
+                "note": "Optional/non-blocking; no umpire source collected.",
             },
         },
         "source_urls": {
             "mlb_live_feed": feed_url,
-            "mlb_venue": venue_url(game["venue_id"]),
+            "mlb_venue": venue_primary_url,
+            "mlb_venue_hydrated": venue_hydrated_url,
             "open_meteo": weather_url,
             "home_active_roster": home_roster_url,
             "away_active_roster": away_roster_url,
@@ -264,7 +286,12 @@ def build_manifest_evidence(game_date, game_pk, secondary_starter=None):
             "away_transactions": away_tx_url,
         },
         "venue_coordinates": (
-            {"latitude": coords[0], "longitude": coords[1]} if coords else None
+            {
+                "latitude": coords[0],
+                "longitude": coords[1],
+                "source": coords_source,
+            }
+            if coords else None
         ),
         "context_raw": {
             "weather": weather,
@@ -272,10 +299,6 @@ def build_manifest_evidence(game_date, game_pk, secondary_starter=None):
             "venue_name": game.get("venue_name"),
             "travel_rest": {
                 "status": "raw-schedule-reconstruction-deferred",
-                "note": (
-                    "The Sheet requires a trained/validated transformation before raw "
-                    "travel/rest/circadian data can alter the frozen production score."
-                ),
             },
             "park": {
                 "status": "raw-venue-known-production-mapping-not-estimated",
@@ -284,9 +307,8 @@ def build_manifest_evidence(game_date, game_pk, secondary_starter=None):
         "production_context_policy": {
             "scores": dict(FROZEN_V11_CONTEXT),
             "reason": (
-                "Context Specification marks park/weather/travel transformations as "
-                "SPECIFY/ESTIMATE. BT-0093 collects evidence but does not invent new "
-                "production coefficients."
+                "No validated production mapping exists yet for raw park/weather/"
+                "travel context, so frozen v1.1 structural defaults are preserved."
             ),
         },
         "manifest": manifest,
@@ -295,24 +317,14 @@ def build_manifest_evidence(game_date, game_pk, secondary_starter=None):
         "sportsbook_fields_present": False,
         "production_weights_changed": False,
     }
-    return report
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--date", required=True)
     parser.add_argument("--game-pk", required=True)
-    parser.add_argument(
-        "--secondary-starter-json",
-        help=(
-            "Optional JSON file with home_starter_id, away_starter_id, source. "
-            "Without this, starter remains YELLOW even if MLB endpoints agree."
-        ),
-    )
-    parser.add_argument(
-        "--report-output",
-        default="live_evidence_report.json",
-    )
+    parser.add_argument("--secondary-starter-json")
+    parser.add_argument("--report-output", default="live_evidence_report.json")
     parser.add_argument(
         "--manifest-output",
         default="live_verified_manifest.draft.json",
@@ -324,25 +336,26 @@ def main():
         secondary = json.loads(Path(args.secondary_starter_json).read_text())
 
     report = build_manifest_evidence(
-        args.date,
-        args.game_pk,
-        secondary_starter=secondary,
+        args.date, args.game_pk, secondary_starter=secondary
     )
 
     Path(args.report_output).write_text(json.dumps(report, indent=2))
     Path(args.manifest_output).write_text(json.dumps(report["manifest"], indent=2))
 
+    verified_path = Path("live_verified_manifest.json")
+    if verified_path.exists():
+        verified_path.unlink()
+
     if report["manifest_ready_for_BT_0092"]:
-        Path("live_verified_manifest.json").write_text(
-            json.dumps(report["manifest"], indent=2)
-        )
+        verified_path.write_text(json.dumps(report["manifest"], indent=2))
 
     print(json.dumps({
         "schema": report["schema"],
         "game_pk": report["game"]["game_pk"],
+        "venue_coordinates": report["venue_coordinates"],
         "integrity_lights": report["manifest"]["lights"],
         "manifest_ready_for_BT_0092": report["manifest_ready_for_BT_0092"],
-        "verified_manifest_written": Path("live_verified_manifest.json").exists(),
+        "verified_manifest_written": verified_path.exists(),
         "prices_seen": report["prices_seen"],
     }, indent=2))
 
