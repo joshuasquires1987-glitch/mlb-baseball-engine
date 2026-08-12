@@ -31,7 +31,10 @@ jobs:
       - name: Run v1.1 structural benchmark
         run: python run_v11_structural_benchmark.py
 
-      - name: Upload replay and benchmark artifacts
+      - name: Run benchmark diagnostics
+        run: python run_v11_structural_diagnostics.py
+
+      - name: Upload replay, benchmark, and diagnostic artifacts
         if: always()
         uses: actions/upload-artifact@v5
         with:
@@ -43,4 +46,6 @@ jobs:
             v11_structural_default_benchmark_report.json
             v11_structural_default_calibration.csv
             v11_structural_default_subgroups.csv
+            v11_structural_default_diagnostic_report.json
+            v11_structural_default_diagnostic_groups.csv
           if-no-files-found: warn
