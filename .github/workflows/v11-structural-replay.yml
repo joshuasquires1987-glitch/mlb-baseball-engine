@@ -40,6 +40,9 @@ jobs:
       - name: Run C002a starter talent v2 challenger
         run: python run_c002a_starter_talent_v2.py
 
+      - name: Run C002b starter signal scale challenger
+        run: python run_c002b_starter_signal_scale.py
+
       - name: Upload replay, benchmark, diagnostics, and challenger artifacts
         if: always()
         uses: actions/upload-artifact@v5
@@ -58,4 +61,6 @@ jobs:
             c001_prior_season_home_baseline_scored_games.jsonl
             c002a_starter_talent_v2_report.json
             c002a_starter_talent_v2_scored_games.jsonl
+            c002b_starter_signal_scale_report.json
+            c002b_starter_signal_scale_scored_games.jsonl
           if-no-files-found: warn
